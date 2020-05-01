@@ -476,7 +476,6 @@ describe "index section", ()->
     it "-1.0", ()->
       validate_clone_test uo(float, "MINUS", type "float")
     
-    # плохо, но hu2prod
     it "1?", ()->
       validate_clone_test uo(int, "IS_NOT_NULL", type "bool")
     
@@ -493,7 +492,6 @@ describe "index section", ()->
       it "-string", ()->
         assert.throws ()-> uo(string, "MINUS", type "int").validate()
       
-      # плохо, но hu2prod
       it "1? -> int?", ()->
         assert.throws ()-> uo(int, "IS_NOT_NULL", type "int").validate()
   

@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hu2prod/ast4gen.git"
+    "url": "git+https://github.com/konchunas/ast4gen.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hu2prod/ast4gen/issues"
+    "url": "https://github.com/konchunas/ast4gen/issues"
   },
-  "homepage": "https://github.com/hu2prod/ast4gen#readme",
+  "homepage": "https://github.com/konchunas/ast4gen#readme",
   "devDependencies": {
     "coveralls": "^2.11.16",
     "iced-coffee-coverage": "^1.0.21",
@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "fy": "github:hu2prod/fy",
-    "type": "github:hu2prod/type"
+    "type": "github:konchunas/ast4gen-type"
   }
 }
