@@ -1,37 +1,31 @@
 # ast4gen
-Generic AST
+Generic AST in Coffeescript
 
- * [Что такое AST](https://ru.wikipedia.org/wiki/%D0%90%D0%B1%D1%81%D1%82%D1%80%D0%B0%D0%BA%D1%82%D0%BD%D0%BE%D0%B5_%D1%81%D0%B8%D0%BD%D1%82%D0%B0%D0%BA%D1%81%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5_%D0%B4%D0%B5%D1%80%D0%B5%D0%B2%D0%BE)
- * Зачем оно мне.
-   * Я хочу написать код один раз и оттранслировать его в coffee, Rust и Java.
-   * Мне нужно универсальное представление кода. Оно должно быть транслируемо в почти любой императивный ЯП.
-   * В нём должны быть все базовые конструкции
-   * В нём должны быть типы (см модуль [type](https://github.com/hu2prod/type))
-   * В нём должна быть самопроверка что этот AST валидный, а значит код может быть сгенерирован и в нём нет банальных ошибок (типа провтыкали поле в ast заполнить, или вставили не то, или не полностью). 
- * Что есть в этом модуле
-    * This. Указатель на instance этого объекта в методах. Пример `@`
-    * Const. Числовая, строковая, булевая константа. Примеры `1`, `1.1`, `'1'`, `true`
-    * Array_init. Примеры `[]`, `[1]`
-    * Hash_init. Примеры `{}`, `{a:1}`, `{a:1, b:1}`. `hash` обязан иметь одинаковый тип значений. Можно добавлять, удалять ключи в runtime
-    * Struct_init. Примеры `{a:1}`, `{a:1, b:'1'}`. `struct` может иметь разный тип полей. Фиксированный набор ключей.
-    * Var. Пример `a`. Использование переменной
-    * Bin_op. Пример `a*b`.
-    * Un_op. Пример `!a`.
-    * Field_access. Пример `a.b`
-    * Fn_call. Пример `a()`, `a(b)`
-    * Scope. Блок. Пример тело цикла - это блок.
+This is [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) primarily used  in Solidity to LIGO transpiler. It goes bundled with [types](https://github.com/madfish-solutions/ast4gen-type) helper
+
+It implements the following nodes:
+    * Const
+    * Array_init
+    * Hash_init. Initialization list for maps
+    * Struct_init
+    * Var
+    * Bin_op
+    * Un_op
+    * Field_access. Like `foo.bar`
+    * Fn_call
+    * Scope. List of operations inside `for` loop for example
     * If
     * Switch
     * Loop
     * Break
     * Continue
     * While
-    * For_range. Пример `for i in [1 .. 10]`, `for i in [1 .. 10] by 1`
-    * For_array. Пример `for v in array`, `for v,k in array`
-    * For_hash. Пример `for k of hash`, `for k,v of hash`
-    * Ret. Пример `return`, `return(1)`
+    * For_range. Like `for i in [1 .. 10]`, `for i in [1 .. 10] by 1`
+    * For_array. Like `for v in array`, `for v,k in array`
+    * For_hash. Like `for k of hash`, `for k,v of hash`
+    * Ret. Return values
     * Try
     * Throw
-    * Var_decl. Пример `var a:int`
+    * Var_decl
     * Class_decl
-    * Fn_decl. Пример `function(a:int):int{return a}`
+    * Fn_decl
