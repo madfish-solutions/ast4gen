@@ -15,11 +15,11 @@ void_type = new Type "void"
       return root.nest_list[idx].clone()
     for v,k in _t.nest_list
       _t.nest_list[k] = walk v
-    for k,v of _t.field_hash
+    for k,v of _t.field_map
       # Прим. пока эта часть еще никем не используется
       # TODO make some test
       ### !pragma coverage-skip-block ###
-      _t.field_hash[k] = walk v
+      _t.field_map[k] = walk v
     _t
   walk t
 
@@ -32,32 +32,32 @@ type_validate = (t, ctx)->
     when "void", "int", "float", "string", "bool"
       if t.nest_list.length != 0
         throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have nest_list"
-      if 0 != h_count t.field_hash
-        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_hash"
+      if 0 != h_count t.field_map
+        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_map"
     
     when "array", "hash_int"
       if t.nest_list.length != 1
         throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have nest_list 1"
-      if 0 != h_count t.field_hash
-        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_hash"
+      if 0 != h_count t.field_map
+        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_map"
     
     when "hash"
       if t.nest_list.length != 1
         throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have nest_list 1"
-      if 0 != h_count t.field_hash
-        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_hash"
+      if 0 != h_count t.field_map
+        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_map"
     
     when "struct"
       if t.nest_list.length != 0
         throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have nest_list 0"
-      # if 0 == h_count t.field_hash
-      #   throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have field_hash"
+      # if 0 == h_count t.field_map
+      #   throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have field_map"
     
     when "function"
       if t.nest_list.length == 0
         throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} must have at least nest_list 1 (ret type)"
-      if 0 != h_count t.field_hash
-        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_hash"
+      if 0 != h_count t.field_map
+        throw new Error "Type validation error line=#{@line} pos=#{@pos}. #{t.main} can't have field_map"
       ""
       # TODO defined types ...
     
@@ -68,7 +68,7 @@ type_validate = (t, ctx)->
     # continue if k == 0 and t.main == "function" and v.main == "void" # it's ok
     type_validate v, ctx
   
-  for k,v of t.field_hash
+  for k,v of t.field_map
     type_validate v, ctx
   
   return
@@ -277,7 +277,7 @@ class @Struct_init
       
     for k,v of @hash
       v.validate(ctx)
-      if !v.type.cmp cmp_type = @type.field_hash[k]
+      if !v.type.cmp cmp_type = @type.field_map[k]
         throw new Error "Struct_init validation error line=#{@line} pos=#{@pos}. key '#{k}' must be type '#{cmp_type}' but '#{v.type}' found"
     
     return
@@ -671,8 +671,8 @@ class @Field_access
       nest_type = new Type "function"
       nest_type.nest_list[0] = @t.type
     else if @t.type.main == "struct"
-      if !nest_type = @t.type.field_hash[@name]
-        throw new Error "Field_access validation error line=#{@line} pos=#{@pos}. Access to missing field '#{@name}' in '#{@t.type}'. Possible keys [#{Object.keys(@t.type.field_hash).join ', '}]"
+      if !nest_type = @t.type.field_map[@name]
+        throw new Error "Field_access validation error line=#{@line} pos=#{@pos}. Access to missing field '#{@name}' in '#{@t.type}'. Possible keys [#{Object.keys(@t.type.field_map).join ', '}]"
     else
       class_decl = ctx.check_type @t.type.main
       if !nest_type = class_decl._prepared_field2type[@name]
